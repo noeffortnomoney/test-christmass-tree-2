@@ -508,6 +508,12 @@ body {
   <div id="popupBox">
     <div id="closeBtn">✕</div>
 
+    <video id="popupVideo"
+      autoplay
+      loop
+      muted
+      playsinline>
+    </video>
     <!-- <video id="popupVideo"
       src="https://res.cloudinary.com/ddcbvgrxw/video/upload/v1765936498/ipad-boc_tham-02_1_gew2qs.mp4" 
       autoplay loop muted playsinline > 
@@ -570,16 +576,15 @@ function openPopup(id) {
   const popupVideo = document.getElementById("popupVideo");
   const videoSrc = popupVideos[id];
 
-  if (videoSrc) {
+  if (popupVideo && videoSrc) {
     popupVideo.pause();
     popupVideo.src = videoSrc;
     popupVideo.load();
     popupVideo.play();
   }
+
   autoCloseTimeout = setTimeout(closePopup, 15000);
 }
-
-
 
 function closePopup() {
   popupOverlay.style.display = "none";
@@ -638,16 +643,6 @@ window.addEventListener("resize", updateHotspotPositions);
 document.querySelectorAll(".giftImage").forEach(img => {
   img.style.opacity = "0";
 });
-
-  function openPopup(id) {
-  // clear auto close
-  if (autoCloseTimeout) {
-    clearTimeout(autoCloseTimeout);
-    autoCloseTimeout = null;
-  }
-
-  popupOverlay.style.display = "flex";
-}
 </script>
 </body>
 </html>
