@@ -102,28 +102,27 @@ body {
   cursor: pointer;
   z-index: 400;
 } */
-  #closeBtn {
+#closeBtn {
   position: absolute;
   top: 32px;
   right: 32px;
 
   width: 56px;
   height: 56px;
-
   border-radius: 50%;
 
-  /* 🎄 NỀN VÀNG GIÁNG SINH */
+  /* 🎄 NỀN VÀNG – MÀU CHUẨN */
   background: radial-gradient(
     circle at top left,
-    #ffe9a8,
-    #f2c94c
+    #f1c36b,
+    #d8a149
   );
 
   /* 🎄 VIỀN XANH GIÁNG SINH */
   border: 3px solid #1f6f54;
 
-  /* 🎄 MÀU DẤU X */
-  color: #1f3d2b;
+  /* ✖️ MÀU DẤU X – ĐẬM HƠN NỀN ĐỂ RÕ */
+  color: #3b2a12;
 
   font-size: 26px;
   font-weight: 700;
@@ -136,21 +135,21 @@ body {
   cursor: pointer;
   z-index: 400;
 
-  /* ✨ HIỆU ỨNG NHẸ – KHÔNG LAG */
+  /* ✨ GLOW NHẸ – KHÔNG LAG */
   box-shadow:
-    0 0 10px rgba(242, 201, 76, 0.6),
-    inset 0 0 6px rgba(255,255,255,0.6);
+    0 0 10px rgba(216,161,73,0.7),
+    inset 0 0 6px rgba(255,255,255,0.5);
 
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* Hover nhẹ cho desktop */
 #closeBtn:hover {
   transform: scale(1.08);
   box-shadow:
-    0 0 14px rgba(242, 201, 76, 0.9),
-    inset 0 0 8px rgba(255,255,255,0.8);
+    0 0 14px rgba(216,161,73,0.95),
+    inset 0 0 8px rgba(255,255,255,0.7);
 }
+
 
 /* POPUP VIDEO */
 #popupVideo {
