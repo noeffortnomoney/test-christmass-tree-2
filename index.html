@@ -523,26 +523,78 @@ body {
   <div id="popupBox">
     <div id="closeBtn">✕</div>
 
-    <video class="popupVideo" id="pv1" muted playsinline loop preload="auto"
-      src="https://res.cloudinary.com/ddcbvgrxw/video/upload/v1765936498/ipad-boc_tham-02_1_gew2qs.mp4"></video>
+    <video
+  class="popupVideo"
+  id="pv1"
+  muted
+  playsinline
+  autoplay
+  loop
+  preload="auto"
+  src="https://res.cloudinary.com/ddcbvgrxw/video/upload/v1765936498/ipad-boc_tham-02_2.mp4">
+</video>
+<video
+  class="popupVideo"
+  id="pv2"
+  muted
+  playsinline
+  autoplay
+  loop
+  preload="auto"
+  src="https://res.cloudinary.com/ddcbvgrxw/video/upload/v1765936498/ipad-boc_tham-02_2.mp4">
+</video>
+    <video
+  class="popupVideo"
+  id="pv3"
+  muted
+  playsinline
+  autoplay
+  loop
+  preload="auto"
+  src="https://res.cloudinary.com/ddcbvgrxw/video/upload/v1765936498/ipad-boc_tham-02_2.mp4">
+</video>
+    <video
+  class="popupVideo"
+  id="pv4"
+  muted
+  playsinline
+  autoplay
+  loop
+  preload="auto"
+  src="https://res.cloudinary.com/ddcbvgrxw/video/upload/v1765936498/ipad-boc_tham-02_2.mp4">
+</video>
+<video
+  class="popupVideo"
+  id="pv5"
+  muted
+  playsinline
+  autoplay
+  loop
+  preload="auto"
+  src="https://res.cloudinary.com/ddcbvgrxw/video/upload/v1765936498/ipad-boc_tham-02_2.mp4">
+</video>
+<video
+  class="popupVideo"
+  id="pv6"
+  muted
+  playsinline
+  autoplay
+  loop
+  preload="auto"
+  src="https://res.cloudinary.com/ddcbvgrxw/video/upload/v1765936498/ipad-boc_tham-02_2.mp4">
+</video>
+<video
+  class="popupVideo"
+  id="pv7"
+  muted
+  playsinline
+  autoplay
+  loop
+  preload="auto"
+  src="https://res.cloudinary.com/ddcbvgrxw/video/upload/v1765936498/ipad-boc_tham-02_2.mp4">
+</video>
 
-    <video class="popupVideo" id="pv2" muted playsinline loop preload="auto"
-      src="https://res.cloudinary.com/ddcbvgrxw/video/upload/v1765936498/ipad-boc_tham-02_2.mp4"></video>
 
-    <video class="popupVideo" id="pv3" muted playsinline loop preload="auto"
-      src="https://res.cloudinary.com/ddcbvgrxw/video/upload/v1765936498/ipad-boc_tham-03.mp4"></video>
-
-    <video class="popupVideo" id="pv4" muted playsinline loop preload="auto"
-      src="https://res.cloudinary.com/ddcbvgrxw/video/upload/v1765936498/ipad-boc_tham-04.mp4"></video>
-
-    <video class="popupVideo" id="pv5" muted playsinline loop preload="auto"
-      src="https://res.cloudinary.com/ddcbvgrxw/video/upload/v1765936498/ipad-boc_tham-05.mp4"></video>
-
-    <video class="popupVideo" id="pv6" muted playsinline loop preload="auto"
-      src="https://res.cloudinary.com/ddcbvgrxw/video/upload/v1765936498/ipad-boc_tham-06.mp4"></video>
-
-    <video class="popupVideo" id="pv7" muted playsinline loop preload="auto"
-      src="https://res.cloudinary.com/ddcbvgrxw/video/upload/v1765936498/ipad-boc_tham-07.mp4"></video>
 
   </div>
 </div>
@@ -596,7 +648,6 @@ function openPopup(id) {
 
   popupOverlay.style.display = "flex";
 
-  // hide & pause all popup videos
   document.querySelectorAll(".popupVideo").forEach(v => {
     v.pause();
     v.currentTime = 0;
@@ -607,14 +658,15 @@ function openPopup(id) {
   if (!video) return;
 
   video.style.display = "block";
+  video.muted = true; // BẮT BUỘC iOS
 
-  video.play().catch(() => {
-    video.muted = true;
+  requestAnimationFrame(() => {
     video.play();
   });
 
   autoCloseTimeout = setTimeout(closePopup, 15000);
 }
+
 
 function closePopup() {
   popupOverlay.style.display = "none";
