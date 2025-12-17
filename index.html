@@ -514,6 +514,9 @@ body {
   position: relative;
   z-index: 1;
 }
+#popupOverlay {
+  pointer-events: none;
+}
 
 </style>
 </head>
@@ -593,7 +596,9 @@ function openPopup(id) {
     autoCloseTimeout = null;
   }
 
-  popupOverlay.style.display = "flex";
+ popupOverlay.style.display = "flex";
+popupOverlay.style.pointerEvents = "auto";
+
 
   const src = popupVideos[id];
   if (!src) return;
@@ -617,6 +622,8 @@ function openPopup(id) {
 
 function closePopup() {
   popupOverlay.style.display = "none";
+  popupOverlay.style.pointerEvents = "none";
+
 
   if (autoCloseTimeout) {
     clearTimeout(autoCloseTimeout);
@@ -672,4 +679,4 @@ window.addEventListener("resize", updateHotspotPositions);
 </script>
 
 </body>
-</html> sửa lại code (giữ nguyên style)
+</html>
