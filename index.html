@@ -512,12 +512,12 @@ body {
   <div id="popupBox">
     <div id="closeBtn">✕</div>
     <video
-      id="popupVideo"
-      autoplay
-      loop
-      muted
-      playsinline>
-    </video>
+        id="popupVideo"
+        loop
+        muted
+        playsinline
+        preload="auto">
+      </video>
   </div>
 </div>
 
@@ -571,15 +571,24 @@ function openPopup(id) {
   popupOverlay.style.display = "flex";
 
   const src = popupVideos[id];
-  if (src) {
-    popupVideo.pause();
-    popupVideo.src = src;
-    popupVideo.load();
+  if (!src) return;
+
+  popupVideo.pause();
+  popupVideo.removeAttribute("src");
+  popupVideo.load();
+
+  popupVideo.src = src;
+  popupVideo.currentTime = 0;
+  popupVideo.load();
+
+  popupVideo.play().catch(() => {
+    popupVideo.muted = true;
     popupVideo.play();
-  }
+  });
 
   autoCloseTimeout = setTimeout(closePopup, 15000);
 }
+
 
 function closePopup() {
   popupOverlay.style.display = "none";
