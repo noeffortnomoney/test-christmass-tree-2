@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Christmas Tree (Version 1)</title>
+<title>Christmas Tree – Version 2</title>
 
 <style>
 * {
@@ -18,59 +18,49 @@ body {
   font-family: sans-serif;
 }
 
-/* MAIN WRAPPER */
+/* ================= APP ================= */
 #app {
   position: absolute;
   inset: 0;
   width: 100vw;
-  height: 100dvh; /* CHUẨN 100% CHIỀU CAO iPAD */
+  height: 100dvh;
   max-width: 1620px;
   max-height: 2160px;
   margin: 0 auto;
   overflow: hidden;
+  background: #000;
 }
 
-/* BACKGROUND VIDEO */
+/* ============== BACKGROUND VIDEO ============== */
 #bgVideo {
   position: absolute;
   inset: 0;
-  width: 100%;
+  width: auto;
   height: 100%;
-  object-fit: cover; /* hoặc contain if cần */
+  object-fit: contain;
+  margin: 0 auto;
+  display: block;
 }
 
-/* HOTSPOT */
+/* ================= HOTSPOT ================= */
 .hotspot {
-  transform: translate(-50%, -50%);
   position: absolute;
   width: 84px;
   height: 84px;
-  cursor: pointer;
   border-radius: 50%;
-  /* background: radial-gradient(
-    circle,
-    rgba(255,255,255,0.95) 0%,
-    rgba(255,255,255,0) 60%
-  );
-  filter: blur(10px);
-  animation: float 2.2s ease-in-out infinite; */
+  cursor: pointer;
+  transform: translate(-50%, -50%);
 }
 
-@keyframes float {
-  0% { transform: translate(-50%, -50%) translateY(0) rotate(-2deg); }
-  50% { transform: translate(-50%, -50%) translateY(-8px) rotate(2deg); }
-  100% { transform: translate(-50%, -50%) translateY(0) rotate(-2deg); }
-}
-
-/* POPUP OVERLAY */
+/* ================= POPUP ================= */
 #popupOverlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.6);
+  background: rgba(0,0,0,0.65);
   display: none;
   justify-content: center;
   align-items: center;
-  z-index: 300;
+  z-index: 999;
 }
 
 #popupBox {
@@ -82,25 +72,26 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  background: #000;
 }
 
-/* CLOSE BUTTON */
+/* CLOSE */
 #closeBtn {
   position: absolute;
-  top: 40px;
-  right: 40px;
-  width: 80px;
-  height: 80px;
-  background: rgba(0,0,0,0.75);
+  top: 32px;
+  right: 32px;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.7);
   border: 3px solid #fff;
   color: #fff;
-  border-radius: 50%;
-  font-size: 36px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  font-size: 32px;
   cursor: pointer;
-  z-index: 400;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* POPUP VIDEO */
@@ -108,489 +99,75 @@ body {
   width: auto;
   height: 100%;
   object-fit: contain;
-  z-index: 10;
-}
-  
-/* TEXT */
-.popupText {
-  font-family: 
-    "Myriad Pro",
-    "MyriadPro",
-    "Segoe UI",
-    "Helvetica Neue",
-    Arial,
-    sans-serif;
-  letter-spacing: -0.02em;
-  position: absolute;
-  inset: 0;
-  display: none;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  z-index: 50;
-  pointer-events: none;
-
-  /* responsive font size */
-  font-size: clamp(28px, 4vw, 46px);
-  line-height: 1.15;
-  font-weight: 700;
-  color: #111;
-
-  opacity: 0;
-  transform: translateY(20px) scale(0.98);
-  -webkit-text-stroke: 1px rgba(255,255,255,0.6);
-}
-.popupText .giftName {
-  font-weight: 800;
-  letter-spacing: -0.01em;
+  background: #000;
 }
 
-.popupText.show {
-  animation: popupTextReveal 0.6s ease-out forwards;
-}
-
-@keyframes popupTextReveal {
-  0% {
-    opacity: 0;
-    transform: translateY(20px) scale(0.98);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-/* SNOW */
-.snowflake {
-  position: absolute;
-  top: -10px;
-  background: white;
-  border-radius: 50%;
-  opacity: 0.8;
-  filter: drop-shadow(0 0 6px rgba(255,255,255,0.6));
-  animation: fall linear infinite;
-}
-
-@keyframes fall {
-  0% { transform: translateY(-20px); opacity: 0.3; }
-  50% { opacity: 1; }
-  100% { transform: translateY(110vh); opacity: 0.3; }
-}
-
-/* FIREWORK PARTICLE */
-.particle {
-  position: absolute;
-  border-radius: 50%;
-  opacity: 1;
-  width: 12px;
-  height: 12px;
-  filter: drop-shadow(0 0 10px rgba(255,255,255,0.9));
-  transform: translate(0, 0) scale(0.4);
-  animation: explode 1.2s ease-out forwards;
-  will-change: transform, opacity;
-}
-
-@keyframes explode {
-  0% {
-    transform: translate(0, 0) scale(0.4);
-    opacity: 1;
-  }
-  70% {
-    opacity: 1;
-  }
-  100% {
-    transform: translate(var(--tx, 0px), var(--ty, 0px)) scale(1.2);
-    opacity: 0;
-  }
-}
-/* =========================================================
-   ==============    MOBILE ≤ 768px    =====================
-========================================================= */
-@media (max-width: 767px) {
+/* ================= MOBILE ================= */
+@media (max-width: 768px) {
   #bgVideo,
   #popupVideo {
     width: 100%;
     height: 100%;
-    object-fit: contain !important; /* Giữ nguyên tỉ lệ, không crop 2 bên */
-    background: #000; /* giúp top/bottom có màu đen */
+    object-fit: contain;
   }
 
-  #app {
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
-  }
-
-  #popupBox {
-    width: 100vw;
-    height: 100vh;
-    background: #000;
-  }
   .hotspot {
-    width: 80px;
-    height: 80px;
+    width: 64px;
+    height: 64px;
   }
-  .popupText {
-    font-size: clamp(20px, 3vw, 35px);
-  }
+
   #closeBtn {
-    position: absolute;
-    width: 50px;
-    height: 50px;
-    top: 180px;
+    width: 48px;
+    height: 48px;
+    font-size: 24px;
+    top: 20px;
     right: 20px;
-    border-width: 3px;
-    font-size: 30px;
-  }
-  #text7 {
-  justify-content: flex-start;   /* đẩy nội dung lên trên */
-  align-items: flex-start;       /* canh trái */
-
-  text-align: left;
-
-  padding-left: 25%;
-  padding-top: 54%;
-  font-size: 26px !important;
-}
-}
-/* =========================================================
-   ==============   768px ≤ TABLET ≤ 1024px    =====================
-========================================================= */
-@media (min-width: 767px) and (max-width: 1024px) {
-  .hotspot {
-    width: 130px;
-    height: 130px;
-  }
-
-  #closeBtn {
-    width: 50px;
-    height: 50px;
-    font-size: 30px;
-  }
-
-  .popupText {
-    /* font-size: clamp(30px, 4vw, 454545); */
-    font-size: 33px !important; 
-    line-height: 1.2;
-  }
-  .giftImage {
-    top: 80%;        
-    width: 30%;       
-  }
-  #text7 {
-    position: absolute !important;
-
-    top: 40%;      /* CỐ ĐỊNH */
-    left: 25%;     /* CỐ ĐỊNH */
-    width: 46%;    /* CỐ ĐỊNH */
-
-    display: block !important;
-
-    text-align: left;
-    align-items: flex-start;
-    justify-content: flex-start;
-
-    /* font-size: 24px !important; */
-    /* line-height: 1.35; */
-
-    padding: 0 !important;
-    margin: 0 !important;
   }
 }
-/* =========================================================
-   LAPTOP 1025px → 1366px
-========================================================= */
-@media (min-width: 1025px) and (max-width: 1366px) {
-  .hotspot {
-    width: 130px;
-    height: 130px;
-  }
-
-  #closeBtn {
-    position: absolute;
-    width: 76px;
-    height: 76px;
-    top: 30px;
-    right: 475px;
-    border-width: 3px;
-    font-size: 30px;
-  }
-  
-  .popupText {
-    font-size: clamp(30px, 3vw, 35px);
-  }
-  #text7 {
-  justify-content: flex-start;   /* đẩy nội dung lên trên */
-  align-items: flex-start;       /* canh trái */
-
-  text-align: left;
-
-  padding-left: 25%;
-  padding-top: 54%;
-  font-size: 26px !important;
-}
-}
-/* =========================================================
-   PC 1367px → 1919px
-========================================================= */
-@media (min-width: 1367px) and (max-width: 1919px) {
-  .hotspot {
-    width: 130px;
-    height: 130px;
-    filter: blur(12px);
-  }
-
-  #closeBtn {
-    position: absolute;
-    width: 76px;
-    height: 76px;
-    top: 30px;
-    right: 475px;
-    border-width: 3px;
-    font-size: 30px;
-  }
-
-  .popupText {
-    font-size: clamp(30px, 2.5vw, 40px);
-    line-height: 1.1;
-  }
-  #text7 {
-  justify-content: flex-start;   /* đẩy nội dung lên trên */
-  align-items: flex-start;       /* canh trái */
-
-  text-align: left;
-
-  padding-left: 25%;
-  padding-top: 54%;
-  font-size: 26px !important;
-}
-}
-/* =========================================================
-   DESKTOP ≥ 1920px
-========================================================= */
-@media (min-width: 1920px) {
-  #app {
-    max-width: 1800px;
-    max-height: 2400px;
-  }
-
-  .hotspot {
-    width: 130px;
-    height: 130px;
-  }
-
-  #closeBtn {
-    position: absolute;
-    width: 76px;
-    height: 76px;
-    top: 30px;
-    right: 475px;
-    border-width: 3px;
-    font-size: 30px;
-  }
-
-  .popupText {
-    font-size: clamp(30px, 2vw, 50px);
-  }
-  #text7 {
-  justify-content: flex-start;   /* đẩy nội dung lên trên */
-  align-items: flex-start;       /* canh trái */
-
-  text-align: left;
-
-  padding-left: 25%;
-  padding-top: 54%;
-  font-size: 26px !important;
-}
-}
-/* =========================================================
-   VIDEO FIX CHUNG — ÁP DỤNG CHO TẤT CẢ ≥ 1024px
-   Video luôn vào giữa, không crop, thừa hai bên trái/phải OK
-========================================================= */
-@media (min-width: 1025px) {
-  #bgVideo {
-    width: auto !important;
-    height: 100% !important;
-    object-fit: contain !important;
-    background: #000;
-    display: block;       /* để margin auto hoạt động */
-    margin: 0 auto;       /* căn giữa trái phải */
-  }
-
-  #popupVideo {
-    width: auto !important;
-    height: 100% !important;
-    object-fit: contain !important;
-    background: #000;
-    display: block;
-    margin: 0 auto;
-  }
-
-  #app {
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
-    background: #000;
-  }
-
-}
-.giftImage {
-  position: absolute;
-  height: auto;
-
-  z-index: 80;
-  pointer-events: none;
-
-  opacity: 0;
-  transform: translateX(-50%) translateY(20px) rotate(14deg);
-
-  transition: opacity 0.4s ease, transform 0.4s ease;
-}
-  #gift1{
-      width: 40%;
-  max-width: 340px;
-      left: 50%;
-      top: 63%;
-  }
-  #gift2{
-      width: 40%;
-  max-width: 340px;
-      left: 50%;
-      top: 63%;
-  }
-  #gift3{
-      width: 40%;
-  max-width: 340px;
-    left: 50%;
-      top: 59%;
-  }
-  #gift4{
-      width: 40%;
-  max-width: 340px;
-    left: 50%;
-      top: 61%;
-  }
-  #gift5{
-      width: 40%;
-  max-width: 340px;
-    left: 50%;
-      top: 57%;
-  }
-  #gift6{
-      width: 40%;
-  max-width: 340px;
-    left: 50%;
-      top: 57%;
-  }
-  #gift7{
-      width: 40%;
-  max-width: 500px;
-    left: 72%;
-      top: 46%;
-    transform: translateX(-50%) translateY(5px) rotate(0deg) !important;
-  }
 </style>
 </head>
-  
+
 <body>
-  
+
+<!-- ============== MAIN VIDEO ============== -->
 <div id="app">
-  <video id="bgVideo"
+  <video
+    id="bgVideo"
     src="https://res.cloudinary.com/ddcbvgrxw/video/upload/v1765794137/ipad-boc_tham-01_2_tlcf37.mp4"
-    autoplay loop muted playsinline>
+    autoplay
+    loop
+    muted
+    playsinline>
   </video>
 </div>
 
-<!-- POPUP -->
+<!-- ============== POPUP ============== -->
 <div id="popupOverlay">
-
   <div id="popupBox">
     <div id="closeBtn">✕</div>
-
-    <video id="popupVideo"
-      src="https://res.cloudinary.com/ddcbvgrxw/video/upload/v1765936498/ipad-boc_tham-02_1_gew2qs.mp4" 
-      autoplay loop muted playsinline > 
-    </video> 
-    <!-- <img
+    <video
       id="popupVideo"
-      src="https://res.cloudinary.com/ddcbvgrxw/image/upload/v1765786259/man_hinh_ipad_1620x1954px_-boc_tham-nen_tuhdb0.jpg"
-      alt="Popup background"
-    /> -->
-
-    <!-- TEXT LAYERS -->
-    <!-- <div class="popupText" id="text1"><span class="text-small-1" style="font-size: 30px; font-weight: 400">Quý khách hàng <br> đã nhận được phần quà <br></span><span class="giftName" style="font-weight: 1000">01 gối Kymdan<br>PressureFree Air<br><span><span class="text-small" style="font-size: 30px; font-weight: 800;">(trị giá 2.678.000 VND)</span></span>
-    </div>
-     <img
-        class="giftImage"
-        src="https://res.cloudinary.com/ddcbvgrxw/image/upload/v1765854464/Pressurefree_Air_j31qjk.webp"
-        alt="Gối Kymdan PressureFree Air"
-         id="gift1"
-      />
-    <div class="popupText" id="text2"><span class="text-small-1" style="font-size: 30px; font-weight: 400">Quý khách hàng <br> đã nhận được phần quà <br></span><span class="giftName" style="font-weight: 1000">01 gối Kymdan<br>PressureFree Max<br><span class="text-small" style="font-size: 30px; font-weight: 800;">(trị giá 3.816.000 VND)</span></span>  
-    </div>
-    <img
-      class="giftImage"
-      src="https://res.cloudinary.com/ddcbvgrxw/image/upload/v1765796409/Pressurefree_Max_zrfiye.webp"
-      alt="Gối Kymdan PressureFree Max"
-      id="gift2"
-    />
-    <div class="popupText" id="text3"><span class="text-small-1" style="font-size: 30px; font-weight: 400">Quý khách hàng <br> đã nhận được phần quà <br></span><span class="giftName" style="font-weight: 1000">01 gối Kymdan Glory Air<br><span class="text-small" style="font-size: 30px; font-weight: 800;">(trị giá 2.571.000 VND)</span></span>
-    </div>
-     <img
-        class="giftImage"
-        src="https://res.cloudinary.com/ddcbvgrxw/image/upload/v1765854463/glory_air_puhhnh.webp"
-        alt="Gối Kymdan Glory Air"
-       id="gift3"
-      />
-    <div class="popupText" id="text4"><span class="text-small-1" style="font-size: 30px; font-weight: 400">Quý khách hàng <br> đã nhận được phần quà <br></span><span class="giftName" style="font-weight: 1000">01 gối Kymdan<br>LumbarLatex Travel<br><span class="text-small" style="font-size: 30px; font-weight: 800;">(trị giá 1.812.000 VND)</span></span>
-    </div>
-       <img
-        class="giftImage"
-        src="https://res.cloudinary.com/ddcbvgrxw/image/upload/v1765854463/DSC_3835-travel-xam_z2opy5.webp"
-        alt="Gối Kymdan LumbarLatex Travel"
-         id="gift4"
-      />
-    <div class="popupText" id="text5"><span class="text-small-1" style="font-size: 30px; font-weight: 400">Quý khách hàng <br> đã nhận được phần quà <br></span><span class="giftName" style="font-weight: 1000">01 gối Kymdan TravelGo<br><span class="text-small" style="font-size: 30px; font-weight: 800;">(trị giá 1.754.000 VND)</span></span>
-    </div>
-       <img
-        class="giftImage"
-        src="https://res.cloudinary.com/ddcbvgrxw/image/upload/v1765854464/TravelGo_aknwfu.webp"
-        alt="Gối Kymdan TravelGo"
-         id="gift5"
-      />
-    <div class="popupText" id="text6"><span class="text-small-1" style="font-size: 30px; font-weight: 400">Quý khách hàng <br> đã nhận được phần quà <br></span><span class="giftName" style="font-weight: 1000">01 gối Kymdan Comfy<br><span class="text-small" style="font-size: 30px; font-weight: 800;">(trị giá 1.826.000 VND)</span></span>
-    </div>
-       <img
-        class="giftImage"
-        src="https://res.cloudinary.com/ddcbvgrxw/image/upload/v1765854465/Comfy_hhjhxz.webp"
-        alt="Gối Kymdan Comfy"
-         id="gift6"
-      />
-    <div class="popupText" id="text7" style="line-height: 1.2"><span class="text-small-1" style="font-size: 28px; font-weight: 400">Quý khách hàng <br> đã nhận được phần quà<br></span><span class="giftName" style="font-size: 33px; line-height: 1.15; font-weight: 1000">01 bộ 2 Voucher<br><span class="text-small" style="font-size: 20px; font-weight: 800; line-height: 1.15">(giảm thêm 500.000 VND <br>khi mua nệm<br>+ giảm thêm 300.000 VND <br> khi mua gối)</span></span>
-    </div>
-     <img
-        class="giftImage"
-        src="https://res.cloudinary.com/ddcbvgrxw/image/upload/v1765854464/voucher_noel_mockup_y7kytq.webp"
-        alt="Gối Kymdan PressureFree Air"
-       id="gift7"
-      />
-  </div> -->
+      autoplay
+      loop
+      muted
+      playsinline>
+    </video>
+  </div>
 </div>
 
 <script>
-  const popupVideos = {
+/* ================= VIDEO MAP ================= */
+const popupVideos = {
   1: "https://res.cloudinary.com/ddcbvgrxw/video/upload/v1765936498/ipad-boc_tham-02_1_gew2qs.mp4",
-  2: "https://res.cloudinary.com/ddcbvgrxw/video/upload/v1765936498/ipad-boc_tham-02_1_gew2qs.mp4",
-  3: "https://res.cloudinary.com/ddcbvgrxw/video/upload/v1765936498/ipad-boc_tham-02_1_gew2qs.mp4",
-  4: "https://res.cloudinary.com/ddcbvgrxw/video/upload/v1765936498/ipad-boc_tham-02_1_gew2qs.mp4",
-  5: "https://res.cloudinary.com/ddcbvgrxw/video/upload/v1765936498/ipad-boc_tham-02_1_gew2qs.mp4",
-  6: "https://res.cloudinary.com/ddcbvgrxw/video/upload/v1765936498/ipad-boc_tham-02_1_gew2qs.mp4",
-  7: "https://res.cloudinary.com/ddcbvgrxw/video/upload/v1765936498/ipad-boc_tham-02_1_gew2qs.mp4",
+  2: "https://res.cloudinary.com/ddcbvgrxw/video/upload/v1765936498/ipad-boc_tham-02_2.mp4",
+  3: "https://res.cloudinary.com/ddcbvgrxw/video/upload/v1765936498/ipad-boc_tham-03.mp4",
+  4: "https://res.cloudinary.com/ddcbvgrxw/video/upload/v1765936498/ipad-boc_tham-04.mp4",
+  5: "https://res.cloudinary.com/ddcbvgrxw/video/upload/v1765936498/ipad-boc_tham-05.mp4",
+  6: "https://res.cloudinary.com/ddcbvgrxw/video/upload/v1765936498/ipad-boc_tham-06.mp4",
+  7: "https://res.cloudinary.com/ddcbvgrxw/video/upload/v1765936498/ipad-boc_tham-07.mp4",
 };
-/* =====================================================
-      HOTSPOTS
-===================================================== */
+
+/* ================= HOTSPOTS ================= */
 const ornamentPositions = [
   { id: 1, x: "50%", y: "13%" },
   { id: 2, x: "50%", y: "29%" },
@@ -602,7 +179,13 @@ const ornamentPositions = [
 ];
 
 const app = document.getElementById("app");
+const popupOverlay = document.getElementById("popupOverlay");
+const popupVideo = document.getElementById("popupVideo");
+const closeBtn = document.getElementById("closeBtn");
 
+let autoCloseTimeout = null;
+
+/* ================= CREATE HOTSPOTS ================= */
 ornamentPositions.forEach(pos => {
   const dot = document.createElement("div");
   dot.className = "hotspot";
@@ -612,16 +195,7 @@ ornamentPositions.forEach(pos => {
   app.appendChild(dot);
 });
 
-/* =====================================================
-      POPUP
-===================================================== */
-let autoCloseTimeout = null;
-  
-const popupOverlay = document.getElementById("popupOverlay");
-const closeBtn = document.getElementById("closeBtn");
-  
-closeBtn.onclick = closePopup;
-
+/* ================= POPUP LOGIC ================= */
 function openPopup(id) {
   if (autoCloseTimeout) {
     clearTimeout(autoCloseTimeout);
@@ -630,23 +204,16 @@ function openPopup(id) {
 
   popupOverlay.style.display = "flex";
 
-  const popupVideo = document.getElementById("popupVideo");
-  const videoSrc = popupVideos[id];
-
-  if (videoSrc) {
+  const src = popupVideos[id];
+  if (src) {
     popupVideo.pause();
-    popupVideo.src = videoSrc;
+    popupVideo.src = src;
     popupVideo.load();
     popupVideo.play();
   }
 
-  //stopFireworks();
-  //startFireworks();
-
   autoCloseTimeout = setTimeout(closePopup, 15000);
 }
-
-
 
 function closePopup() {
   popupOverlay.style.display = "none";
@@ -656,80 +223,14 @@ function closePopup() {
     autoCloseTimeout = null;
   }
 
-  const popupVideo = document.getElementById("popupVideo");
   popupVideo.pause();
   popupVideo.removeAttribute("src");
   popupVideo.load();
-
-  //stopFireworks();
 }
 
+closeBtn.onclick = closePopup;
 
-
-
-// let fwInterval = null;
-// let fwTimeout = null;
-
-// function startFireworks() {
-//   //stopFireworks(); // xoá mọi thứ cũ trước
-
-//   const container = document.createElement("div");
-//   container.id = "fireworks-container";
-//   container.style.position = "fixed";
-//   container.style.inset = "0";
-//   container.style.pointerEvents = "none";
-//   container.style.zIndex = "99999";
-//   document.body.appendChild(container);
-
-//   // BẮT ĐẦU bắn pháo mỗi 300ms
-//   //fwInterval = setInterval(() => makeBurst(container), 300);
-
-//   // TỰ TẮT sau 7 giây
-//   fwTimeout = setTimeout(() => {
-//     stopFireworks();
-//   }, 7000);
-// }
-
-// function stopFireworks() {
-//   if (fwInterval !== null) {
-//     clearInterval(fwInterval);
-//     fwInterval = null;
-//   }
-//   if (fwTimeout !== null) {
-//     clearTimeout(fwTimeout);
-//     fwTimeout = null;
-//   }
-
-//   const old = document.getElementById("fireworks-container");
-//   if (old) old.remove();
-// }
-
-// function makeBurst(container) {
-//   // tránh bắn sát mép màn hình
-//   const bx = 6 + Math.random() * 88;
-//   const by = 12 + Math.random() * 56;
-
-//   for (let i = 0; i < 28; i++) {
-//     const p = document.createElement("div");
-//     p.className = "particle";
-
-//     const angle = Math.random() * Math.PI * 2;
-//     const speed = 100 + Math.random() * 160;
-
-//     const tx = Math.cos(angle) * speed;
-//     const ty = Math.sin(angle) * speed;
-
-//     p.style.left = bx + "%";
-//     p.style.top = by + "%";
-//     p.style.background = `hsl(${Math.floor(Math.random() * 360)}, 90%, 60%)`;
-//     p.style.setProperty("--tx", tx + "px");
-//     p.style.setProperty("--ty", ty + "px");
-
-//     container.appendChild(p);
-
-//     setTimeout(() => p.remove(), 1400);
-//   }
-}
+/* ================= HOTSPOT POSITION FIX ================= */
 function getVideoMetrics() {
   const video = document.getElementById("bgVideo");
   const container = document.getElementById("app");
@@ -740,13 +241,11 @@ function getVideoMetrics() {
   let displayWidth, displayHeight, offsetX, offsetY;
 
   if (videoRatio > containerRatio) {
-    // Video quá rộng → fit theo chiều rộng container
     displayWidth = container.offsetWidth;
     displayHeight = displayWidth / videoRatio;
     offsetX = 0;
     offsetY = (container.offsetHeight - displayHeight) / 2;
   } else {
-    // Video quá cao → fit theo chiều cao container
     displayHeight = container.offsetHeight;
     displayWidth = displayHeight * videoRatio;
     offsetX = (container.offsetWidth - displayWidth) / 2;
@@ -755,70 +254,22 @@ function getVideoMetrics() {
 
   return { displayWidth, displayHeight, offsetX, offsetY };
 }
+
 function updateHotspotPositions() {
   const { displayWidth, displayHeight, offsetX, offsetY } = getVideoMetrics();
 
   ornamentPositions.forEach((pos, index) => {
     const dot = document.getElementsByClassName("hotspot")[index];
-
     const x = (parseFloat(pos.x) / 100) * displayWidth + offsetX;
     const y = (parseFloat(pos.y) / 100) * displayHeight + offsetY;
-
     dot.style.left = x + "px";
     dot.style.top = y + "px";
   });
 }
+
 bgVideo.addEventListener("loadedmetadata", updateHotspotPositions);
 window.addEventListener("resize", updateHotspotPositions);
-document.querySelectorAll(".giftImage").forEach(img => {
-  img.style.opacity = "0";
-});
-
-  function openPopup(id) {
-  // clear auto close
-  if (autoCloseTimeout) {
-    clearTimeout(autoCloseTimeout);
-    autoCloseTimeout = null;
-  }
-
-  popupOverlay.style.display = "flex";
-
-  /* ===== TEXT ===== */
-  // document.querySelectorAll(".popupText").forEach(t => {
-  //   t.style.display = "none";
-  //   t.classList.remove("show");
-  // });
-
-  // const text = document.getElementById("text" + id);
-  // if (text) {
-  //   text.style.display = "flex";
-  //   void text.offsetWidth; // force reflow
-  //   text.classList.add("show");
-  // }
-
-  /* ===== GIFT IMAGE ===== */
-  // document.querySelectorAll(".giftImage").forEach(img => {
-  //   img.style.opacity = "0";
-  //   img.style.transform = "translateX(-50%) translateY(10px)";
-  // });
-
-  // const gift = document.getElementById("gift" + id);
-  // if (gift) {
-  //   void gift.offsetWidth;
-  //   gift.style.opacity = "1";
-  //   gift.style.transform = "translateX(-50%) translateY(0)";
-  // }
-
-  // /* ===== FIREWORKS ===== */
-  // stopFireworks();
-  // startFireworks();
-
-  // autoCloseTimeout = setTimeout(closePopup, 15000);
-}
-
-
-
-
 </script>
+
 </body>
 </html>
