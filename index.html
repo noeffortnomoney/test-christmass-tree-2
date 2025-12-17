@@ -544,16 +544,10 @@ body {
     <div id="closeBtn">✕</div>
 
     <video id="popupVideo"
-      autoplay
-      loop
       muted
-      playsinline>
+      playsinline
+      preload="auto">
     </video>
-    <!-- <video id="popupVideo"
-      src="https://res.cloudinary.com/ddcbvgrxw/video/upload/v1765936498/ipad-boc_tham-02_1_gew2qs.mp4" 
-      autoplay loop muted playsinline > 
-    </video>  -->
-
 </div>
 
 <script>
@@ -606,17 +600,26 @@ function openPopup(id) {
     autoCloseTimeout = null;
   }
 
-  popupOverlay.style.display = "flex";
-
   const popupVideo = document.getElementById("popupVideo");
   const videoSrc = popupVideos[id];
+  if (!popupVideo || !videoSrc) return;
 
-  if (popupVideo && videoSrc) {
-    popupVideo.pause();
-    popupVideo.src = videoSrc;
-    popupVideo.load();
+  // Reset video sạch
+  popupVideo.pause();
+  popupVideo.removeAttribute("src");
+  popupVideo.load();
+
+  // Gán src mới
+  popupVideo.src = videoSrc;
+  popupVideo.currentTime = 0;
+
+  // ⏳ Chờ video sẵn sàng rồi mới show popup
+  popupVideo.oncanplay = () => {
+    popupOverlay.style.display = "flex";
     popupVideo.play();
-  }
+  };
+
+  popupVideo.load();
 
   autoCloseTimeout = setTimeout(closePopup, 15000);
 }
