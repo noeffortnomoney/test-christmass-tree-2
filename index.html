@@ -591,10 +591,11 @@ ornamentPositions.forEach(pos => {
 
   openPopup(pos.id); // popup hiện ngay
 
+  sendToN8N(pos.id);
   // ⏳ đợi 3 giây rồi mới gửi data (tránh spam)
-  setTimeout(() => {
-    sendToN8N(pos.id);
-  }, 3000);
+  // setTimeout(() => {
+  //   sendToN8N(pos.id);
+  // }, 3000);
 
   // 🔓 mở khóa sau 3 giây
   setTimeout(() => {
