@@ -580,13 +580,32 @@ ornamentPositions.forEach(pos => {
   dot.className = "hotspot";
   dot.style.left = pos.x;
   dot.style.top = pos.y;
-  dot.onclick = () => {
-  openPopup(pos.id); // popup hiện ngay
+  // dot.onclick = () => {
+  // openPopup(pos.id); // popup hiện ngay
 
-  // ⏳ đợi 2 giây rồi mới gửi data (tránh spam)
-  setTimeout(() => {
-    sendToN8N(pos.id);
-  }, 2000);
+  // // ⏳ đợi 2 giây rồi mới gửi data (tránh spam)
+  // setTimeout(() => {
+  //   sendToN8N(pos.id);
+  // }, 2000);
+   let isProcessing = false;
+    dot.onclick = () => {
+      if (isProcessing) return;   // ⛔ CHẶN BẤM LẠI NGAY
+    
+      isProcessing = true;        // 🔒 KHÓA TRONG 3–4s
+    
+      openPopup(pos.id);          // UI phản hồi NGAY
+    
+      // gửi backend SAU (không ảnh hưởng UX)
+      setTimeout(() => {
+        sendToN8N(pos.id);
+      }, 2000);
+    
+      // mở khóa lại
+      setTimeout(() => {
+        isProcessing = false;
+      }, 1000);
+    };
+
 };
 
 
@@ -718,6 +737,25 @@ function sendToN8N(giftId) {
     })
   });
 }
+  let isProcessing = false;
+dot.onclick = () => {
+  if (isProcessing) return;   // ⛔ CHẶN BẤM LẠI NGAY
+
+  isProcessing = true;        // 🔒 KHÓA TRONG 3–4s
+
+  openPopup(pos.id);          // UI phản hồi NGAY
+
+  // gửi backend SAU (không ảnh hưởng UX)
+  setTimeout(() => {
+    sendToN8N(pos.id);
+  }, 2000);
+
+  // mở khóa lại
+  setTimeout(() => {
+    isProcessing = false;
+  }, 4000);
+};
+
 
 
 </script>
