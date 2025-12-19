@@ -727,10 +727,16 @@ function sendToN8N(giftId) {
       giftId: giftId,
       giftName: giftMap[giftId] || "Quà bí mật",
       page: "christmas-tree",
-      device: "ipad",
+      device: getDeviceName(), // ✅ TÊN iPad
+      userAgent: navigator.userAgent,
       time: new Date().toISOString()
     })
   });
+}
+//lấy api thiết bị 
+  function getDeviceName() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get("device") || "unknown_device";
 }
 
 
