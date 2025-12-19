@@ -687,20 +687,22 @@ document.querySelectorAll(".giftImage").forEach(img => {
 });
 
   //n8n
-  function sendToN8N(giftId) {
+function sendToN8N(giftId) {
   fetch("https://test-christmass-tree-2.app.n8n.cloud/webhook/xmas-tree", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json"
-  },
-  body: JSON.stringify({
-    giftId: giftId,
-    page: "christmas-tree",
-    device: "ipad",
-    time: new Date().toISOString()
-  })
-});
+    method: "POST",
+    mode: "no-cors", // ✅ QUAN TRỌNG
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      giftId: giftId,
+      page: "christmas-tree",
+      device: "ipad",
+      time: new Date().toISOString()
+    })
+  });
 }
+
 
 </script>
 </body>
