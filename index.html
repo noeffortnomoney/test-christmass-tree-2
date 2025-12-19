@@ -715,25 +715,59 @@ const giftMap = {
   6: "01 gối Kymdan Comfy (trị giá 1.826.000 VND)",
   7: "01 bộ 2 Voucher (giảm thêm 500.000 VND khi mua nệm + giảm thêm 300.000 VND khi mua gối)"
 };
-
-  //n8n
+let currentFetchController = null;
 function sendToN8N(giftId) {
+  // ⛔ huỷ request trước đó nếu còn
+  if (currentFetchController) {
+    currentFetchController.abort();
+  }
+
+  // tạo controller mới
+  currentFetchController = new AbortController();
+  const { signal } = currentFetchController;
+
   fetch("https://test-christmas-tree-2.app.n8n.cloud/webhook/xmas-tree", {
     method: "POST",
-    mode: "no-cors", // ✅ QUAN TRỌNG
+    mode: "no-cors",
+    signal, // ⭐ quan trọng
     headers: {
       "Content-Type": "application/json"
     },
     body: JSON.stringify({
-      giftId: giftId,
+      giftId,
       giftName: giftMap[giftId] || "Quà bí mật",
       page: "christmas-tree",
-      device: getDeviceName(), // ✅ TÊN iPad
+      device: getDeviceName(),
       userAgent: navigator.userAgent,
       time: new Date().toISOString()
     })
+  }).catch(err => {
+    if (err.name === "AbortError") {
+      console.log("Fetch cũ đã bị huỷ");
+    } else {
+      console.error(err);
+    }
   });
 }
+
+  //n8n
+// function sendToN8N(giftId) {
+//   fetch("https://test-christmas-tree-2.app.n8n.cloud/webhook/xmas-tree", {
+//     method: "POST",
+//     mode: "no-cors", // ✅ QUAN TRỌNG
+//     headers: {
+//       "Content-Type": "application/json"
+//     },
+//     body: JSON.stringify({
+//       giftId: giftId,
+//       giftName: giftMap[giftId] || "Quà bí mật",
+//       page: "christmas-tree",
+//       device: getDeviceName(), // ✅ TÊN iPad
+//       userAgent: navigator.userAgent,
+//       time: new Date().toISOString()
+//     })
+//   });
+// }
 //lấy api thiết bị 
   function getDeviceName() {
   const params = new URLSearchParams(window.location.search);
