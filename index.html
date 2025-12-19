@@ -580,7 +580,11 @@ ornamentPositions.forEach(pos => {
   dot.className = "hotspot";
   dot.style.left = pos.x;
   dot.style.top = pos.y;
-  dot.onclick = () => openPopup(pos.id);
+  dot.onclick = () => {
+    openPopup(pos.id);   // popup chạy NGAY
+    sendToN8N(pos.id);   // gửi data song song
+  };
+
   app.appendChild(dot);
 });
 
