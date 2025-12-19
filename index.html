@@ -551,6 +551,8 @@ body {
 </div>
 
 <script>
+  let isClickLocked = false;
+
   const popupVideos = {
   1: "https://res.cloudinary.com/ddcbvgrxw/video/upload/v1765944138/FreeMax_gz55cp.mp4",
   2: "https://res.cloudinary.com/ddcbvgrxw/video/upload/v1765936498/ipad-boc_tham-02_1_gew2qs.mp4",
@@ -581,13 +583,25 @@ ornamentPositions.forEach(pos => {
   dot.style.left = pos.x;
   dot.style.top = pos.y;
   dot.onclick = () => {
+  // ⛔ nếu đang bị khóa click thì bỏ qua
+  if (isClickLocked) return;
+
+  // 🔒 khóa click cho iPad này
+  isClickLocked = true;
+
   openPopup(pos.id); // popup hiện ngay
 
   // ⏳ đợi 2 giây rồi mới gửi data (tránh spam)
   setTimeout(() => {
     sendToN8N(pos.id);
   }, 2000);
+
+  // 🔓 mở khóa sau 3 giây
+  setTimeout(() => {
+    isClickLocked = false;
+  }, 3000);
 };
+
 
 
   app.appendChild(dot);
