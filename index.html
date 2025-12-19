@@ -560,19 +560,6 @@ body {
   6: "https://res.cloudinary.com/ddcbvgrxw/video/upload/v1765944140/Lumbar_qg70b0.mp4",
   7: "https://res.cloudinary.com/ddcbvgrxw/video/upload/v1765944136/Voucher_uubv0t.mp4",
 };
-
-  // 🔥 PRELOAD TẤT CẢ VIDEO POPUP (giảm lag mạng yếu)
-const preloadedVideos = {};
-
-Object.entries(popupVideos).forEach(([id, src]) => {
-  const v = document.createElement("video");
-  v.src = src;
-  v.preload = "auto";
-  v.muted = true;
-  v.playsInline = true;
-  preloadedVideos[id] = v;
-});
-
 /* =====================================================
       HOTSPOTS
 ===================================================== */
@@ -623,22 +610,28 @@ function openPopup(id) {
   }
 
   const popupVideo = document.getElementById("popupVideo");
-  const preloadVideo = preloadedVideos[id];
-  if (!popupVideo || !preloadVideo) return;
+  const videoSrc = popupVideos[id];
+  if (!popupVideo || !videoSrc) return;
 
-  // ✅ HIỆN POPUP NGAY – KHÔNG CHỜ VIDEO
-  popupOverlay.style.display = "flex";
+  // Reset video sạch
+  popupVideo.pause();
+  popupVideo.removeAttribute("src");
+  popupVideo.load();
 
-  // ✅ Gán src từ video đã preload
-  popupVideo.src = preloadVideo.src;
+  // Gán src mới
+  popupVideo.src = videoSrc;
   popupVideo.currentTime = 0;
 
-  // ▶️ Play (nếu mạng yếu sẽ play trễ nhưng UI đã hiện)
-  popupVideo.play().catch(() => {});
+  // ⏳ Chờ video sẵn sàng rồi mới show popup
+  popupVideo.oncanplay = () => {
+    popupOverlay.style.display = "flex";
+    popupVideo.play();
+  };
+
+  popupVideo.load();
 
   autoCloseTimeout = setTimeout(closePopup, 15000);
 }
-
 
 function closePopup() {
   popupOverlay.style.display = "none";
