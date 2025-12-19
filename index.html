@@ -551,15 +551,37 @@ body {
 </div>
 
 <script>
+//   const popupVideos = {
+//   1: "https://res.cloudinary.com/ddcbvgrxw/video/upload/v1765944138/FreeMax_gz55cp.mp4",
+//   2: "https://res.cloudinary.com/ddcbvgrxw/video/upload/v1765936498/ipad-boc_tham-02_1_gew2qs.mp4",
+//   3: "https://res.cloudinary.com/ddcbvgrxw/video/upload/v1765944138/GloryAir_vugs8p.mp4",
+//   4: "https://res.cloudinary.com/ddcbvgrxw/video/upload/v1765944135/TravelGo_rmpkyr.mp4",
+//   5: "https://res.cloudinary.com/ddcbvgrxw/video/upload/v1765944136/Comfy_lyqm1o.mp4",
+//   6: "https://res.cloudinary.com/ddcbvgrxw/video/upload/v1765944140/Lumbar_qg70b0.mp4",
+//   7: "https://res.cloudinary.com/ddcbvgrxw/video/upload/v1765944136/Voucher_uubv0t.mp4",
+// };
   const popupVideos = {
-  1: "https://res.cloudinary.com/ddcbvgrxw/video/upload/v1765944138/FreeMax_gz55cp.mp4",
-  2: "https://res.cloudinary.com/ddcbvgrxw/video/upload/v1765936498/ipad-boc_tham-02_1_gew2qs.mp4",
-  3: "https://res.cloudinary.com/ddcbvgrxw/video/upload/v1765944138/GloryAir_vugs8p.mp4",
-  4: "https://res.cloudinary.com/ddcbvgrxw/video/upload/v1765944135/TravelGo_rmpkyr.mp4",
-  5: "https://res.cloudinary.com/ddcbvgrxw/video/upload/v1765944136/Comfy_lyqm1o.mp4",
-  6: "https://res.cloudinary.com/ddcbvgrxw/video/upload/v1765944140/Lumbar_qg70b0.mp4",
-  7: "https://res.cloudinary.com/ddcbvgrxw/video/upload/v1765944136/Voucher_uubv0t.mp4",
+  1: "https://res.cloudinary.com/ddcbvgrxw/video/upload/f_auto,q_auto,w_1080/v1765944138/FreeMax_gz55cp.mp4",
+  2: "https://res.cloudinary.com/ddcbvgrxw/video/upload/f_auto,q_auto,w_1080/v1765936498/ipad-boc_tham-02_1_gew2qs.mp4",
+  3: "https://res.cloudinary.com/ddcbvgrxw/video/upload/f_auto,q_auto,w_1080/v1765944138/GloryAir_vugs8p.mp4",
+  4: "https://res.cloudinary.com/ddcbvgrxw/video/upload/f_auto,q_auto,w_1080/v1765944135/TravelGo_rmpkyr.mp4",
+  5: "https://res.cloudinary.com/ddcbvgrxw/video/upload/f_auto,q_auto,w_1080/v1765944136/Comfy_lyqm1o.mp4",
+  6: "https://res.cloudinary.com/ddcbvgrxw/video/upload/f_auto,q_auto,w_1080/v1765944140/Lumbar_qg70b0.mp4",
+  7: "https://res.cloudinary.com/ddcbvgrxw/video/upload/f_auto,q_auto,w_1080/v1765944136/Voucher_uubv0t.mp4",
 };
+
+  // 🔥 PRELOAD TẤT CẢ VIDEO POPUP (giảm lag mạng yếu)
+const preloadedVideos = {};
+
+Object.entries(popupVideos).forEach(([id, src]) => {
+  const v = document.createElement("video");
+  v.src = src;
+  v.preload = "auto";
+  v.muted = true;
+  v.playsInline = true;
+  preloadedVideos[id] = v;
+});
+
 /* =====================================================
       HOTSPOTS
 ===================================================== */
@@ -610,28 +632,22 @@ function openPopup(id) {
   }
 
   const popupVideo = document.getElementById("popupVideo");
-  const videoSrc = popupVideos[id];
-  if (!popupVideo || !videoSrc) return;
+  const preloadVideo = preloadedVideos[id];
+  if (!popupVideo || !preloadVideo) return;
 
-  // Reset video sạch
-  popupVideo.pause();
-  popupVideo.removeAttribute("src");
-  popupVideo.load();
+  // ✅ HIỆN POPUP NGAY – KHÔNG CHỜ VIDEO
+  popupOverlay.style.display = "flex";
 
-  // Gán src mới
-  popupVideo.src = videoSrc;
+  // ✅ Gán src từ video đã preload
+  popupVideo.src = preloadVideo.src;
   popupVideo.currentTime = 0;
 
-  // ⏳ Chờ video sẵn sàng rồi mới show popup
-  popupVideo.oncanplay = () => {
-    popupOverlay.style.display = "flex";
-    popupVideo.play();
-  };
-
-  popupVideo.load();
+  // ▶️ Play (nếu mạng yếu sẽ play trễ nhưng UI đã hiện)
+  popupVideo.play().catch(() => {});
 
   autoCloseTimeout = setTimeout(closePopup, 15000);
 }
+
 
 function closePopup() {
   popupOverlay.style.display = "none";
