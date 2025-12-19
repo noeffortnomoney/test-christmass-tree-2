@@ -681,6 +681,23 @@ window.addEventListener("resize", updateHotspotPositions);
 document.querySelectorAll(".giftImage").forEach(img => {
   img.style.opacity = "0";
 });
+
+  //n8n
+  function sendToN8N(giftId) {
+  fetch("https://test-christmass-tree-2.app.n8n.cloud/webhook/xmas-tree", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      giftId: giftId,
+      time: new Date().toISOString(),
+      source: "ipad-christmas-tree"
+    })
+  }).catch(() => {
+    // im lặng, không ảnh hưởng UX
+  });
+}
 </script>
 </body>
 </html>
