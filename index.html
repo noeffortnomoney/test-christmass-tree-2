@@ -695,13 +695,19 @@ document.querySelectorAll(".giftImage").forEach(img => {
     },
     body: JSON.stringify({
       giftId: giftId,
-      time: new Date().toISOString(),
-      source: "ipad-christmas-tree"
+      source: "ipad-tree",
+      time: new Date().toISOString()
     })
-  }).catch(() => {
-    // im lặng, không ảnh hưởng UX
+  })
+  .then(res => res.json())
+  .then(data => {
+    console.log("Sent to n8n OK", data);
+  })
+  .catch(err => {
+    console.error("Send to n8n failed", err);
   });
 }
+
 </script>
 </body>
 </html>
