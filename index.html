@@ -581,9 +581,14 @@ ornamentPositions.forEach(pos => {
   dot.style.left = pos.x;
   dot.style.top = pos.y;
   dot.onclick = () => {
-    openPopup(pos.id);   // popup chạy NGAY
-    sendToN8N(pos.id);   // gửi data song song
-  };
+  openPopup(pos.id); // popup hiện ngay
+
+  // ⏳ đợi 2 giây rồi mới gửi data (tránh spam)
+  setTimeout(() => {
+    sendToN8N(pos.id);
+  }, 2000);
+};
+
 
   app.appendChild(dot);
 });
@@ -685,6 +690,16 @@ window.addEventListener("resize", updateHotspotPositions);
 document.querySelectorAll(".giftImage").forEach(img => {
   img.style.opacity = "0";
 });
+  
+const giftMap = {
+  1: "01 gối Kymdan PressureFree Air (trị giá 2.678.000 VND)",
+  2: "01 gối Kymdan PressureFree Max (trị giá 3.816.000 VND)",
+  3: "01 gối Kymdan Glory Air (trị giá 2.571.000 VND)",
+  4: "01 gối Kymdan LumbarLatex Travel (trị giá 1.812.000 VND)",
+  5: "01 gối Kymdan TravelGo (trị giá 1.754.000 VND)",
+  6: "01 gối Kymdan Comfy (trị giá 1.826.000 VND)",
+  7: "01 bộ 2 Voucher (giảm thêm 500.000 VND khi mua nệm + giảm thêm 300.000 VND khi mua gối)"
+};
 
   //n8n
 function sendToN8N(giftId) {
@@ -696,6 +711,7 @@ function sendToN8N(giftId) {
     },
     body: JSON.stringify({
       giftId: giftId,
+      giftName: giftMap[giftId] || "Quà bí mật",
       page: "christmas-tree",
       device: "ipad",
       time: new Date().toISOString()
